@@ -203,20 +203,46 @@
     rows.forEach(function (r) { if (r.q5_personality) pCount[r.q5_personality] = (pCount[r.q5_personality] || 0) + 1; });
     var topP = Object.keys(pCount).sort(function (a, b) { return pCount[b] - pCount[a]; })[0];
     var topPShort = topP ? topP.split(":")[0] : "—";
-    // Most common category
+    // Most common category + its count
     var cCount = {};
     rows.forEach(function (r) { (r.q3_categories || []).forEach(function (c) { cCount[c] = (cCount[c] || 0) + 1; }); });
-    var topC = Object.keys(cCount).sort(function (a, b) { return cCount[b] - cCount[a]; })[0] || "—";
-    var named = rows.filter(function (r) { return r.name; }).length;
+    var cKeys = Object.keys(cCount).sort(function (a, b) { return cCount[b] - cCount[a]; });
+    var topC = cKeys[0] || "—";
+    var topCn = cKeys[0] ? cCount[cKeys[0]] : 0;
+
+    // Most common hangout spot (Q1) — useful for planning team outings/activities
+    var hCount = {};
+    rows.forEach(function (r) { (r.q1_locations || []).forEach(function (h) { hCount[h] = (hCount[h] || 0) + 1; }); });
+    var hKeys = Object.keys(hCount).sort(function (a, b) { return hCount[b] - hCount[a]; });
+    var topH = hKeys[0] ? shortSpot(hKeys[0]) : "—";
+    var topHn = hKeys[0] ? hCount[hKeys[0]] : 0;
 
     document.getElementById("stats").innerHTML =
       stat(total, "Total responses") +
-      stat(topPShort, "Top personality") +
-      stat(topC, "Top happy category") +
-      stat(named + " / " + total, "Named (vs anonymous)");
+      stat(topPShort, "Top personality", pCount[topP] ? pCount[topP] + " picked" : "") +
+      stat(topC, "Top happy category", topCn ? topCn + " picked" : "") +
+      stat(topH, "Top hangout spot", topHn ? topHn + " picked" : "");
   }
-  function stat(n, l) {
-    return '<div class="stat"><div class="n">' + esc(n) + '</div><div class="l">' + esc(l) + "</div></div>";
+  // Trim the long Q1 option text down to a short, readable label for the stat tile
+  function shortSpot(s) {
+    var map = {
+      "On the couch. I've earned this.": "On the couch",
+      "Gaming like it's my second job.": "Gaming",
+      "Watching sports and yelling at the TV.": "Watching sports",
+      "Cooking, grilling, or eating something delicious.": "Cooking / eating",
+      "Camping, fishing, hiking, or enjoying the outdoors.": "Outdoors",
+      "Working on my car or another project.": "Car / projects",
+      "At the gym, voluntarily sweating.": "At the gym",
+      "Shopping. It's called retail therapy.": "Shopping",
+      "DIY projects that were supposed to take 20 minutes.": "DIY projects",
+      "Out with friends or family.": "With friends/family",
+      "Traveling or planning my next escape.": "Traveling"
+    };
+    return map[s] || s;
+  }
+  function stat(n, l, sub) {
+    return '<div class="stat"><div class="n">' + esc(n) + "</div>" +
+      '<div class="l">' + esc(l) + (sub ? ' <span style="color:var(--barron-green);font-weight:600;">· ' + esc(sub) + "</span>" : "") + "</div></div>";
   }
 
   function exportCsv() {
