@@ -10,6 +10,7 @@ Coworkers fill out the form; HR reads results and exports to CSV. No emailing an
 | `index.html` | The survey everyone fills out. Submits to Supabase. |
 | `results.html` | **HR-only** dashboard: view responses, quick stats, export CSV. |
 | `poster.html` | Printable **A4 poster** with a QR code. Print & stick up around the office. |
+| `Barron-Survey-Poster-A4.pdf` | **Print-ready A4 PDF** of the poster — just open and print, no browser steps needed. |
 | `barron-survey-qr.png` | Standalone QR code (PNG, 1024px) — for emails, Slack, slides. |
 | `barron-survey-qr.svg` | Standalone QR code (SVG, scales to any size with no blur). |
 | `config.js` | Your Supabase URL + anon key + the survey link (edit this once). |
@@ -75,12 +76,18 @@ Supabase → **Table Editor → `barron_survey_responses`**. View, sort, and exp
 
 ## 🖨️ Printing the QR poster
 
-`poster.html` is a ready-to-print **A4 poster** with a big QR code pointing to the survey.
+**Easiest: just print the PDF.** `Barron-Survey-Poster-A4.pdf` is already sized to A4 — open it
+and print (or send it to a print shop). Done. Print a few copies and stick them up: break rooms,
+by the coffee machine, hallways, elevators, restroom doors — wherever people pause. 🎄
+
+**Or print from the live page** (`poster.html`) if you want to tweak the URL first:
 
 1. Open `poster.html` in a browser (or the live link `.../poster.html`).
 2. Click **🖨️ Print Poster**.
 3. In the print dialog: set paper to **A4**, enable **Background graphics**, and either print or **Save as PDF**.
-4. Print a few copies and stick them up: break rooms, by the coffee machine, hallways, elevators, restroom doors — wherever people pause. 🎄
+
+> ⚠️ The PDF's QR points to `https://taorimanish.github.io/barron-personality-survey/`. If your
+> final survey URL is different, regenerate the PDF/QR (or ask Kiro) so the code matches.
 
 **The QR code points to the link in `config.js` → `surveyUrl`.** If you host the survey somewhere
 other than GitHub Pages, update that value (or use the "Update QR" box on the poster screen to
