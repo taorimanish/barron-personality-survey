@@ -82,13 +82,15 @@
   .kicker {
     font-size: 14pt; font-weight: 700; letter-spacing: 2px;
     text-transform: uppercase; color: var(--barron-green);
-    margin-top: 2mm;
+    margin-top: 2mm; display: flex; align-items: center; gap: 3mm;
   }
+  .kicker svg { width: 6mm; height: 6mm; }
   .title {
     font-size: 36pt; line-height: 1.05; font-weight: 900; text-align: center;
     color: var(--barron-red); margin: 3mm 0 2mm;
+    display: flex; align-items: center; justify-content: center; gap: 4mm;
   }
-  .title .emoji { font-size: 30pt; }
+  .title .ic { width: 12mm; height: 12mm; flex: 0 0 auto; }
   .subtitle {
     font-size: 16pt; text-align: center; color: var(--ink);
     max-width: 150mm; margin: 1mm auto 0; font-weight: 600;
@@ -111,8 +113,9 @@
   #qrcode img, #qrcode canvas { width: 72mm !important; height: 72mm !important; }
   .scan-label {
     margin-top: 3mm; font-size: 15pt; font-weight: 800; color: var(--barron-green);
-    letter-spacing: 0.5px;
+    letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 2.5mm;
   }
+  .scan-label svg { width: 6mm; height: 6mm; }
   .scan-sub { font-size: 10pt; color: var(--muted); margin-top: 1mm; }
 
   .steps {
@@ -159,17 +162,26 @@
   </div>
 
   <div class="page">
-    <div class="kicker">🕵️ You're Invited to Participate</div>
-    <h1 class="title"><span class="emoji">🎉</span> The Great Barron<br />Personality Investigation</h1>
+    <div class="kicker">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1e7a46" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>
+      You're Invited to Participate
+    </div>
+    <h1 class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="#e0a526"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 17.9 6.1 20.8l1.2-6.6L2.5 9l6.6-.9z"/></svg></span>
+      The Great Barron<br />Personality Investigation
+    </h1>
     <p class="subtitle">We work with you. But do we really KNOW you?</p>
     <p class="lead">
       Help us get to know the people behind the Barron name! Your answers inspire future
-      celebrations, activities, and random acts of Barron awesomeness. Takes about 2 minutes. 😎
+      celebrations, activities, and random acts of Barron awesomeness. Takes about 2 minutes.
     </p>
 
     <div class="qr-wrap">
       <div id="qrcode"></div>
-      <div class="scan-label">📱 SCAN ME TO START</div>
+      <div class="scan-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1e7a46" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><line x1="10.5" y1="18.5" x2="13.5" y2="18.5"/></svg>
+        SCAN ME TO START
+      </div>
       <div class="scan-sub">Point your phone camera at the code</div>
     </div>
 
@@ -183,7 +195,7 @@
       No QR scanner? Visit:<br /><strong id="urlText">—</strong>
     </div>
     <div class="footer-note">
-      This survey does not guarantee gifts, prizes, vacation days, raises, or a personal visit from Santa. Nice try, though. 🎄
+      This survey does not guarantee gifts, prizes, vacation days, raises, or a personal visit from Santa. Nice try, though.
     </div>
   </div>
 
