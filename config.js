@@ -13,5 +13,9 @@ window.BARRON_SUPABASE = {
   anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlieXRqd3J3dGlqaWFucmpodHJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxMTMwNDcsImV4cCI6MjEwODY4OTA0N30.b2UYSyZvojjmcfT-uOirl_Qi3slbnVN7igAub2Grn2o",
 
   // name of the table (matches supabase-setup.sql)
-  table: "barron_survey_responses"
+  table: "barron_survey_responses",
+
+  // Public link to the live survey (used by the QR code + poster).
+  // Update this if you host the survey somewhere other than GitHub Pages.
+  surveyUrl: "https://taorimanish.github.io/barron-personality-survey/"
 };

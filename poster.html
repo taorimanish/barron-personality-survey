@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Barron Survey — A4 Poster 🎄</title>
+<style>
+  :root {
+    --barron-red: #c0392b;
+    --barron-green: #1e7a46;
+    --barron-gold: #e0a526;
+    --ink: #22303c;
+    --muted: #5c6b78;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    background: #d9d4c8;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 12px 60px;
+  }
+
+  /* --- Screen controls (hidden when printing) --- */
+  .controls {
+    width: 210mm;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .controls .msg { color: var(--muted); font-size: 0.9rem; flex: 1 1 100%; }
+  .controls button, .controls a.btn {
+    font: inherit; font-weight: 700; border: none; border-radius: 10px;
+    padding: 12px 20px; cursor: pointer; text-decoration: none; display: inline-block;
+  }
+  .btn-print { background: var(--barron-red); color: #fff; }
+  .btn-print:hover { background: #a9311f; }
+  .url-edit {
+    flex: 1 1 320px; display: flex; gap: 8px; align-items: center;
+  }
+  .url-edit input {
+    flex: 1; border: 1px solid #b9b2a2; border-radius: 8px; padding: 10px 12px;
+    font-size: 0.9rem; font-family: inherit;
+  }
+  .url-edit button { background: var(--barron-green); color: #fff; padding: 10px 14px; }
+
+  /* --- The A4 page --- */
+  .page {
+    width: 210mm;
+    height: 297mm;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(255,255,255,0.5), transparent 30%),
+      linear-gradient(160deg, #fbf8f2 0%, #fdfbf6 55%, #f6f1e7 100%);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 18mm 16mm;
+    border: 6mm solid transparent;
+  }
+  /* festive corner ribbons */
+  .page::before, .page::after {
+    content: "";
+    position: absolute;
+    width: 60mm; height: 60mm;
+    border-radius: 50%;
+    opacity: 0.1;
+    z-index: 0;
+  }
+  .page::before { background: var(--barron-red); top: -24mm; left: -24mm; }
+  .page::after { background: var(--barron-green); bottom: -24mm; right: -24mm; }
+
+  .page > * { position: relative; z-index: 1; }
+
+  .kicker {
+    font-size: 15pt; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--barron-green);
+    margin-top: 4mm;
+  }
+  .title {
+    font-size: 40pt; line-height: 1.05; font-weight: 900; text-align: center;
+    color: var(--barron-red); margin: 3mm 0 2mm;
+  }
+  .title .emoji { font-size: 34pt; }
+  .subtitle {
+    font-size: 17pt; text-align: center; color: var(--ink);
+    max-width: 150mm; margin: 2mm auto 0; font-weight: 600;
+  }
+  .lead {
+    font-size: 13pt; text-align: center; color: var(--muted);
+    max-width: 150mm; margin: 4mm auto 0; line-height: 1.5;
+  }
+
+  .qr-wrap {
+    margin: 9mm auto 5mm;
+    background: #fff;
+    padding: 7mm;
+    border-radius: 6mm;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+    border: 2px solid #eee6d6;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  #qrcode { width: 78mm; height: 78mm; display: flex; align-items: center; justify-content: center; }
+  #qrcode img, #qrcode canvas { width: 78mm !important; height: 78mm !important; }
+  .scan-label {
+    margin-top: 4mm; font-size: 16pt; font-weight: 800; color: var(--barron-green);
+    letter-spacing: 0.5px;
+  }
+  .scan-sub { font-size: 10.5pt; color: var(--muted); margin-top: 1mm; }
+
+  .steps {
+    display: flex; gap: 8mm; justify-content: center; margin: 6mm auto 0; flex-wrap: wrap;
+  }
+  .step { text-align: center; max-width: 42mm; }
+  .step .n {
+    width: 11mm; height: 11mm; border-radius: 50%; background: var(--barron-red);
+    color: #fff; font-weight: 800; font-size: 14pt; display: grid; place-items: center; margin: 0 auto 2mm;
+  }
+  .step .t { font-size: 10.5pt; color: var(--ink); font-weight: 600; }
+
+  .url-print {
+    margin-top: auto; text-align: center; font-size: 11pt; color: var(--muted);
+    word-break: break-all; padding-top: 6mm;
+  }
+  .url-print strong { color: var(--barron-green); }
+  .footer-note {
+    text-align: center; font-size: 9pt; color: var(--muted); margin-top: 3mm;
+    font-style: italic; max-width: 160mm;
+  }
+
+  @media print {
+    @page { size: A4; margin: 0; }
+    body { background: #fff; padding: 0; }
+    .controls { display: none !important; }
+    .page {
+      box-shadow: none; margin: 0;
+      width: 210mm; height: 297mm;
+      border-color: transparent;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="controls">
+    <div class="msg">
+      🖨️ <strong>To print:</strong> click <em>Print Poster</em> → choose <em>A4</em> paper →
+      enable <em>Background graphics</em> → print or Save as PDF. Then stick it up in break rooms, hallways, by the coffee machine… everywhere! 🎄
+    </div>
+    <button class="btn-print" onclick="window.print()">🖨️ Print Poster</button>
+    <div class="url-edit">
+      <input type="text" id="urlInput" placeholder="Survey URL" />
+      <button onclick="applyUrl()">Update QR</button>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="kicker">🕵️ You're Invited to Participate</div>
+    <h1 class="title"><span class="emoji">🎉</span> The Great Barron<br />Personality Investigation</h1>
+    <p class="subtitle">We work with you. But do we really KNOW you?</p>
+    <p class="lead">
+      Help us get to know the people behind the Barron name! Your answers inspire future
+      celebrations, activities, and random acts of Barron awesomeness. Takes about 2 minutes. 😎
+    </p>
+
+    <div class="qr-wrap">
+      <div id="qrcode"></div>
+      <div class="scan-label">📱 SCAN ME TO START</div>
+      <div class="scan-sub">Point your phone camera at the code</div>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div class="t">Open your phone camera</div></div>
+      <div class="step"><div class="n">2</div><div class="t">Scan the QR code above</div></div>
+      <div class="step"><div class="n">3</div><div class="t">Tap the link &amp; answer away!</div></div>
+    </div>
+
+    <div class="url-print">
+      No QR scanner? Visit:<br /><strong id="urlText">—</strong>
+    </div>
+    <div class="footer-note">
+      This survey does not guarantee gifts, prizes, vacation days, raises, or a personal visit from Santa. Nice try, though. 🎄
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="config.js"></script>
+  <script>
+    function currentUrl() {
+      var cfg = window.BARRON_SUPABASE || {};
+      return cfg.surveyUrl && cfg.surveyUrl.indexOf("YOUR_") === -1
+        ? cfg.surveyUrl
+        : "https://taorimanish.github.io/barron-personality-survey/";
+    }
+
+    var qr = null;
+    function renderQR(url) {
+      var box = document.getElementById("qrcode");
+      box.innerHTML = "";
+      // pixel size roughly matching 78mm at print DPI; library scales the img to the CSS size
+      if (window.QRCode) {
+        qr = new QRCode(box, {
+          text: url,
+          width: 512,
+          height: 512,
+          colorDark: "#1e2a33",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H  // 30% error correction — robust on posters
+        });
+      } else {
+        box.innerHTML = '<div style="font-size:11pt;color:#c0392b;text-align:center;padding:10mm;">'
+          + 'QR library did not load. Check your internet connection and reload.</div>';
+      }
+      document.getElementById("urlText").textContent = url;
+      document.getElementById("urlInput").value = url;
+    }
+
+    function applyUrl() {
+      var v = document.getElementById("urlInput").value.trim();
+      if (!v) return;
+      renderQR(v);
+    }
+
+    renderQR(currentUrl());
+  </script>
+</body>
+</html>

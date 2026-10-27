@@ -9,7 +9,10 @@ Coworkers fill out the form; HR reads results and exports to CSV. No emailing an
 |------|------------|
 | `index.html` | The survey everyone fills out. Submits to Supabase. |
 | `results.html` | **HR-only** dashboard: view responses, quick stats, export CSV. |
-| `config.js` | Your Supabase URL + public anon key (edit this once). |
+| `poster.html` | Printable **A4 poster** with a QR code. Print & stick up around the office. |
+| `barron-survey-qr.png` | Standalone QR code (PNG, 1024px) — for emails, Slack, slides. |
+| `barron-survey-qr.svg` | Standalone QR code (SVG, scales to any size with no blur). |
+| `config.js` | Your Supabase URL + anon key + the survey link (edit this once). |
 | `supabase-setup.sql` | Run once in Supabase to create the table + security rules. |
 | `README.md` | This file. |
 
@@ -69,6 +72,26 @@ Supabase → **Table Editor → `barron_survey_responses`**. View, sort, and exp
 > `results.html` on a trusted machine, and never commit it into `config.js` or publish it.
 
 ---
+
+## 🖨️ Printing the QR poster
+
+`poster.html` is a ready-to-print **A4 poster** with a big QR code pointing to the survey.
+
+1. Open `poster.html` in a browser (or the live link `.../poster.html`).
+2. Click **🖨️ Print Poster**.
+3. In the print dialog: set paper to **A4**, enable **Background graphics**, and either print or **Save as PDF**.
+4. Print a few copies and stick them up: break rooms, by the coffee machine, hallways, elevators, restroom doors — wherever people pause. 🎄
+
+**The QR code points to the link in `config.js` → `surveyUrl`.** If you host the survey somewhere
+other than GitHub Pages, update that value (or use the "Update QR" box on the poster screen to
+preview a different URL before printing).
+
+**Standalone QR images** (`barron-survey-qr.png` / `.svg`) are included too — drop them into
+email signatures, Slack announcements, slide decks, or smaller table tents. The **SVG** scales to
+any size without getting blurry; the **PNG** is handy where SVG isn't supported.
+
+> ⚠️ If you change `surveyUrl`, regenerate the standalone images (or just ask Kiro to) so the
+> QR matches. The poster itself always reads the live value from `config.js`, so it's self-updating.
 
 ## 🔧 Customizing
 - **Change questions/wording:** edit `index.html`. If you add/rename a field, also update the column in `supabase-setup.sql` and the labels in `results.html`.
