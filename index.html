@@ -138,10 +138,10 @@
     <section class="card identity">
       <div class="q-head">
         <span class="q-num">★</span>
-        <h2 class="q-title">First, who's filing this report? <span style="font-weight:400;color:var(--muted);font-size:0.9rem;">(optional)</span></h2>
+        <h2 class="q-title">First, who's filing this report? <span style="font-weight:700;color:var(--barron-red);font-size:0.9rem;">(required)</span></h2>
       </div>
-      <p class="q-help" style="margin-left:42px;">Leave blank to stay a mystery. 🕶️</p>
-      <input type="text" name="name" placeholder="Your name (optional)" />
+      <p class="q-help" style="margin-left:42px;">So we know who to credit for these brilliant answers. 😎</p>
+      <input type="text" name="name" placeholder="Your name" required aria-required="true" />
     </section>
 
     <section class="card">
@@ -362,7 +362,15 @@
 
     var payload = collect();
 
-    // Light check: make sure they answered *something*
+    // Name is required
+    if (!payload.name) {
+      showToast("Please enter your name first 🙂", true);
+      form.name.focus();
+      form.name.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    // Also make sure they answered *something* beyond their name
     var answered = payload.q1_locations.length || payload.q3_categories.length ||
       payload.q2_team || payload.q4_spend75 || payload.q5_personality ||
       payload.q6_worth_it || payload.q7_white_elephant || payload.q8_obsessed_with ||
