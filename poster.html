@@ -63,8 +63,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 18mm 16mm;
-    border: 6mm solid transparent;
+    padding: 14mm 16mm 12mm;
   }
   /* festive corner ribbons */
   .page::before, .page::after {
@@ -81,56 +80,55 @@
   .page > * { position: relative; z-index: 1; }
 
   .kicker {
-    font-size: 15pt; font-weight: 700; letter-spacing: 2px;
+    font-size: 14pt; font-weight: 700; letter-spacing: 2px;
     text-transform: uppercase; color: var(--barron-green);
-    margin-top: 4mm;
+    margin-top: 2mm;
   }
   .title {
-    font-size: 40pt; line-height: 1.05; font-weight: 900; text-align: center;
+    font-size: 36pt; line-height: 1.05; font-weight: 900; text-align: center;
     color: var(--barron-red); margin: 3mm 0 2mm;
   }
-  .title .emoji { font-size: 34pt; }
+  .title .emoji { font-size: 30pt; }
   .subtitle {
-    font-size: 17pt; text-align: center; color: var(--ink);
-    max-width: 150mm; margin: 2mm auto 0; font-weight: 600;
+    font-size: 16pt; text-align: center; color: var(--ink);
+    max-width: 150mm; margin: 1mm auto 0; font-weight: 600;
   }
   .lead {
-    font-size: 13pt; text-align: center; color: var(--muted);
-    max-width: 150mm; margin: 4mm auto 0; line-height: 1.5;
+    font-size: 12.5pt; text-align: center; color: var(--muted);
+    max-width: 150mm; margin: 3mm auto 0; line-height: 1.45;
   }
 
   .qr-wrap {
-    margin: 9mm auto 5mm;
+    margin: 7mm auto 4mm;
     background: #fff;
-    padding: 7mm;
+    padding: 6mm;
     border-radius: 6mm;
     box-shadow: 0 6px 24px rgba(0,0,0,0.12);
     border: 2px solid #eee6d6;
     display: flex; flex-direction: column; align-items: center;
   }
-  #qrcode { width: 78mm; height: 78mm; display: flex; align-items: center; justify-content: center; }
-  #qrcode img, #qrcode canvas { width: 78mm !important; height: 78mm !important; }
+  #qrcode { width: 72mm; height: 72mm; display: flex; align-items: center; justify-content: center; }
+  #qrcode img, #qrcode canvas { width: 72mm !important; height: 72mm !important; }
   .scan-label {
-    margin-top: 4mm; font-size: 16pt; font-weight: 800; color: var(--barron-green);
+    margin-top: 3mm; font-size: 15pt; font-weight: 800; color: var(--barron-green);
     letter-spacing: 0.5px;
   }
-  .scan-sub { font-size: 10.5pt; color: var(--muted); margin-top: 1mm; }
+  .scan-sub { font-size: 10pt; color: var(--muted); margin-top: 1mm; }
 
   .steps {
-    display: flex; gap: 8mm; justify-content: center; margin: 6mm auto 0; flex-wrap: wrap;
+    display: flex; gap: 7mm; justify-content: center; margin: 5mm auto 0; flex-wrap: wrap;
   }
   .step { text-align: center; max-width: 42mm; }
   .step .n {
-    width: 11mm; height: 11mm; border-radius: 50%; background: var(--barron-red);
-    color: #fff; font-weight: 800; font-size: 14pt; display: grid; place-items: center; margin: 0 auto 2mm;
+    width: 10mm; height: 10mm; border-radius: 50%; background: var(--barron-red);
+    color: #fff; font-weight: 800; font-size: 13pt; display: grid; place-items: center; margin: 0 auto 2mm;
   }
-  .step .t { font-size: 10.5pt; color: var(--ink); font-weight: 600; }
+  .step .t { font-size: 10pt; color: var(--ink); font-weight: 600; }
 
   .url-print {
-    margin-top: auto; text-align: center; font-size: 11pt; color: var(--muted);
-    word-break: break-all; padding-top: 6mm;
+    margin-top: 6mm; text-align: center; font-size: 13pt; color: var(--muted);
   }
-  .url-print strong { color: var(--barron-green); }
+  .url-print strong { color: var(--barron-green); font-size: 16pt; }
   .footer-note {
     text-align: center; font-size: 9pt; color: var(--muted); margin-top: 3mm;
     font-style: italic; max-width: 160mm;
@@ -143,7 +141,6 @@
     .page {
       box-shadow: none; margin: 0;
       width: 210mm; height: 297mm;
-      border-color: transparent;
     }
   }
 </style>
