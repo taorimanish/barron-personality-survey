@@ -1,0 +1,13 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log
+
+# Local notes / secrets — never commit the service_role key
+*.secret
+.env
+.env.*
+
+# Local test exports
+barron-survey-results.csv
+barron-survey-*.txt

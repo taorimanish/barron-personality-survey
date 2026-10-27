@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Barron Survey — Results (HR only) 🔒</title>
+<style>
+  :root {
+    --barron-red: #c0392b; --barron-green: #1e7a46; --barron-gold: #e0a526;
+    --ink: #22303c; --muted: #5c6b78; --bg: #f4f1ea; --card: #fff; --border: #e2ddd2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    background: var(--bg); color: var(--ink); padding: 24px 16px 64px; line-height: 1.5;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  header {
+    background: linear-gradient(135deg, var(--barron-green), #155c34); color: #fff;
+    border-radius: 16px; padding: 24px 28px; margin-bottom: 20px;
+  }
+  header h1 { margin: 0 0 4px; font-size: 1.5rem; }
+  header p { margin: 0; opacity: 0.9; font-size: 0.95rem; }
+  .gate, .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 20px 22px; margin-bottom: 18px; box-shadow: 0 3px 10px rgba(34,48,60,0.04);
+  }
+  label.fld { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
+  input[type="text"], input[type="password"] {
+    width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 11px 13px;
+    font-size: 0.95rem; font-family: inherit; margin-bottom: 12px;
+  }
+  input:focus { outline: none; border-color: var(--barron-green); box-shadow: 0 0 0 3px rgba(30,122,70,0.12); }
+  .hint { font-size: 0.82rem; color: var(--muted); margin: -6px 0 12px; }
+  button {
+    font: inherit; font-weight: 700; border: none; border-radius: 10px; padding: 11px 20px;
+    cursor: pointer; background: var(--barron-green); color: #fff;
+  }
+  button:hover { background: #166138; }
+  button.secondary { background: #fff; color: var(--barron-green); border: 2px solid var(--barron-green); }
+  button.secondary:hover { background: #f3faf5; }
+  button:disabled { opacity: 0.6; cursor: not-allowed; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
+  .toolbar input[type="text"] { margin: 0; max-width: 260px; }
+  .spacer { flex: 1; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 18px; }
+  .stat { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  .stat .n { font-size: 1.7rem; font-weight: 800; color: var(--barron-red); }
+  .stat .l { font-size: 0.82rem; color: var(--muted); }
+  .resp {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px 18px; margin-bottom: 14px;
+  }
+  .resp h3 { margin: 0 0 2px; font-size: 1.05rem; }
+  .resp .when { font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; }
+  .qa { margin: 7px 0; font-size: 0.93rem; }
+  .qa .q { font-weight: 600; color: var(--barron-green); }
+  .chip {
+    display: inline-block; background: #eef8f1; border: 1px solid #cfe9d8; color: #155c34;
+    border-radius: 20px; padding: 2px 10px; font-size: 0.82rem; margin: 2px 4px 2px 0;
+  }
+  .empty, .error-box { text-align: center; color: var(--muted); padding: 40px 20px; }
+  .error-box { color: var(--barron-red); }
+  .danger { background: #fff4e5; border: 1px solid var(--barron-gold); color: #7a5600;
+    border-radius: 12px; padding: 12px 14px; font-size: 0.86rem; margin-bottom: 16px; }
+  code { background: #f0ece2; padding: 1px 5px; border-radius: 4px; font-size: 0.85em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🔒 Barron Survey — Results</h1>
+    <p>HR view. Read all responses, see quick stats, and export to CSV.</p>
+  </header>
+
+  <div class="danger">
+    🔑 This page needs a key that can <strong>read</strong> responses. Paste your
+    <strong>service_role</strong> key below (Project Settings → API). It stays only in this
+    browser tab and is never saved. <strong>Do not share this page or key with non-HR staff.</strong>
+    Prefer not to use the key here? You can always read responses directly in the Supabase
+    dashboard → <em>Table Editor</em>.
+  </div>
+
+  <div class="gate card" id="gate">
+    <label class="fld" for="keyInput">Service role key</label>
+    <input type="password" id="keyInput" placeholder="service_role key (starts with eyJ...)" autocomplete="off" />
+    <p class="hint">URL and table name are read from <code>config.js</code>. Only the read key is entered here.</p>
+    <button id="loadBtn">Load responses</button>
+  </div>
+
+  <div id="dashboard" style="display:none;">
+    <div class="toolbar">
+      <input type="text" id="search" placeholder="🔎 Search responses..." />
+      <span class="spacer"></span>
+      <button class="secondary" id="refreshBtn">↻ Refresh</button>
+      <button id="csvBtn">⬇️ Export CSV</button>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div id="list"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+(function () {
+  var cfg = window.BARRON_SUPABASE || {};
+  var sb = null, rows = [];
+
+  var QLABELS = {
+    q1: "Where we'd find you", q2_team: "Team(s)", q3: "Top 3 categories",
+    q4_spend75: "$75 on yourself", q5_personality: "Personality",
+    q6_worth_it: "$50-75 worth-it buy", q7_white_elephant: "White Elephant pick",
+    q8_obsessed_with: "Obsessed with", q9_surprise: "Would surprise coworkers"
+  };
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  document.getElementById("loadBtn").addEventListener("click", function () {
+    var key = document.getElementById("keyInput").value.trim();
+    if (!cfg.url || cfg.url.indexOf("YOUR_SUPABASE") !== -1) {
+      alert("config.js isn't set up yet — add your Supabase URL first.");
+      return;
+    }
+    if (!key) { alert("Paste your service_role key first."); return; }
+    sb = window.supabase.createClient(cfg.url, key);
+    load();
+  });
+  document.getElementById("refreshBtn").addEventListener("click", load);
+  document.getElementById("search").addEventListener("input", render);
+  document.getElementById("csvBtn").addEventListener("click", exportCsv);
+
+  function load() {
+    var btn = document.getElementById("loadBtn");
+    btn.disabled = true; btn.textContent = "Loading...";
+    sb.from(cfg.table).select("*").order("created_at", { ascending: false }).then(function (res) {
+      btn.disabled = false; btn.textContent = "Load responses";
+      if (res.error) {
+        document.getElementById("dashboard").style.display = "none";
+        alert("Could not load responses: " + res.error.message +
+          "\n\nCheck that the key is the service_role key and the table exists.");
+        return;
+      }
+      rows = res.data || [];
+      document.getElementById("gate").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+      render();
+    });
+  }
+
+  function filtered() {
+    var q = document.getElementById("search").value.toLowerCase().trim();
+    if (!q) return rows;
+    return rows.filter(function (r) {
+      return JSON.stringify(r).toLowerCase().indexOf(q) !== -1;
+    });
+  }
+
+  function render() {
+    var data = filtered();
+    renderStats();
+    var list = document.getElementById("list");
+    if (!data.length) {
+      list.innerHTML = '<div class="empty">No responses yet. 📭</div>';
+      return;
+    }
+    list.innerHTML = data.map(function (r) {
+      function multi(arr, other) {
+        var items = (arr || []).slice();
+        if (other) items.push(other + " (other)");
+        if (!items.length) return '<span style="color:var(--muted)">—</span>';
+        return items.map(function (x) { return '<span class="chip">' + esc(x) + "</span>"; }).join("");
+      }
+      function line(label, val) {
+        return '<div class="qa"><span class="q">' + label + ':</span> ' +
+          (val ? esc(val) : '<span style="color:var(--muted)">—</span>') + "</div>";
+      }
+      var when = r.created_at ? new Date(r.created_at).toLocaleString() : "";
+      return '<div class="resp">' +
+        "<h3>" + esc(r.name || "Anonymous 🕶️") + "</h3>" +
+        '<div class="when">' + esc(when) + "</div>" +
+        '<div class="qa"><span class="q">' + QLABELS.q1 + ':</span> ' + multi(r.q1_locations, r.q1_other) + "</div>" +
+        line(QLABELS.q2_team, r.q2_team) +
+        '<div class="qa"><span class="q">' + QLABELS.q3 + ':</span> ' + multi(r.q3_categories, r.q3_other) + "</div>" +
+        line(QLABELS.q4_spend75, r.q4_spend75) +
+        line(QLABELS.q5_personality, r.q5_personality) +
+        line(QLABELS.q6_worth_it, r.q6_worth_it) +
+        line(QLABELS.q7_white_elephant, r.q7_white_elephant) +
+        line(QLABELS.q8_obsessed_with, r.q8_obsessed_with) +
+        line(QLABELS.q9_surprise, r.q9_surprise) +
+        "</div>";
+    }).join("");
+  }
+
+  function renderStats() {
+    var total = rows.length;
+    // Most common personality
+    var pCount = {};
+    rows.forEach(function (r) { if (r.q5_personality) pCount[r.q5_personality] = (pCount[r.q5_personality] || 0) + 1; });
+    var topP = Object.keys(pCount).sort(function (a, b) { return pCount[b] - pCount[a]; })[0];
+    var topPShort = topP ? topP.split(":")[0] : "—";
+    // Most common category
+    var cCount = {};
+    rows.forEach(function (r) { (r.q3_categories || []).forEach(function (c) { cCount[c] = (cCount[c] || 0) + 1; }); });
+    var topC = Object.keys(cCount).sort(function (a, b) { return cCount[b] - cCount[a]; })[0] || "—";
+    var named = rows.filter(function (r) { return r.name; }).length;
+
+    document.getElementById("stats").innerHTML =
+      stat(total, "Total responses") +
+      stat(topPShort, "Top personality") +
+      stat(topC, "Top happy category") +
+      stat(named + " / " + total, "Named (vs anonymous)");
+  }
+  function stat(n, l) {
+    return '<div class="stat"><div class="n">' + esc(n) + '</div><div class="l">' + esc(l) + "</div></div>";
+  }
+
+  function exportCsv() {
+    var cols = ["created_at", "name", "q1_locations", "q1_other", "q2_team",
+      "q3_categories", "q3_other", "q4_spend75", "q5_personality",
+      "q6_worth_it", "q7_white_elephant", "q8_obsessed_with", "q9_surprise"];
+    function cell(v) {
+      if (Array.isArray(v)) v = v.join(" | ");
+      v = v == null ? "" : String(v);
+      return '"' + v.replace(/"/g, '""') + '"';
+    }
+    var lines = [cols.join(",")];
+    filtered().forEach(function (r) {
+      lines.push(cols.map(function (c) { return cell(r[c]); }).join(","));
+    });
+    var blob = new Blob(["\uFEFF" + lines.join("\n")], { type: "text/csv;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = "barron-survey-results.csv";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+})();
+</script>
+</body>
+</html>

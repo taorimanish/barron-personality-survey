@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Great Barron Personality Investigation 🕵️</title>
+<style>
+  :root {
+    --barron-red: #c0392b;
+    --barron-green: #1e7a46;
+    --barron-gold: #e0a526;
+    --ink: #22303c;
+    --muted: #5c6b78;
+    --bg: #f4f1ea;
+    --card: #ffffff;
+    --border: #e2ddd2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(192,57,43,0.06), transparent 40%),
+      radial-gradient(circle at 85% 20%, rgba(30,122,70,0.06), transparent 40%),
+      var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+    padding: 24px 16px 64px;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  header.hero {
+    background: linear-gradient(135deg, var(--barron-red), #9b2d20);
+    color: #fff; border-radius: 20px; padding: 36px 32px; text-align: center;
+    box-shadow: 0 12px 30px rgba(155,45,32,0.25); position: relative; overflow: hidden;
+  }
+  header.hero::after {
+    content: "🎄"; position: absolute; font-size: 180px; right: -30px; bottom: -50px;
+    opacity: 0.08; transform: rotate(-12deg);
+  }
+  header.hero h1 { margin: 0 0 8px; font-size: 2rem; letter-spacing: 0.3px; }
+  header.hero p { margin: 4px 0; font-size: 1.02rem; opacity: 0.95; }
+  .tagline { font-weight: 600; }
+  .disclaimer {
+    margin-top: 18px; background: rgba(255,255,255,0.14);
+    border: 1px dashed rgba(255,255,255,0.5); border-radius: 12px;
+    padding: 12px 16px; font-size: 0.88rem; text-align: left;
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 24px 24px 20px; margin: 20px 0; box-shadow: 0 4px 14px rgba(34,48,60,0.05);
+  }
+  .q-head { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 6px; }
+  .q-num {
+    flex: 0 0 auto; background: var(--barron-green); color: #fff; font-weight: 700;
+    width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+    font-size: 0.95rem; margin-top: 2px;
+  }
+  .q-title { font-size: 1.18rem; font-weight: 700; margin: 0; }
+  .q-help { color: var(--muted); font-size: 0.92rem; margin: 4px 0 14px 42px; }
+  .options { display: grid; gap: 10px; margin-left: 42px; }
+  @media (min-width: 560px) { .options.two-col { grid-template-columns: 1fr 1fr; } }
+  label.opt {
+    display: flex; gap: 10px; align-items: center; padding: 10px 12px;
+    border: 1px solid var(--border); border-radius: 10px; cursor: pointer;
+    transition: all 0.15s ease; background: #fff; font-size: 0.97rem;
+  }
+  label.opt:hover { border-color: var(--barron-green); background: #f3faf5; }
+  label.opt input { width: 17px; height: 17px; accent-color: var(--barron-green); flex: 0 0 auto; }
+  label.opt:has(input:checked) { border-color: var(--barron-green); background: #eef8f1; }
+  .other-row { display: flex; gap: 10px; align-items: center; margin: 10px 0 0 42px; }
+  .other-row span { color: var(--muted); font-size: 0.95rem; white-space: nowrap; }
+  input[type="text"], textarea {
+    width: 100%; border: 1px solid var(--border); border-radius: 10px;
+    padding: 11px 13px; font-size: 0.97rem; font-family: inherit; color: var(--ink);
+    margin-left: 42px; max-width: calc(100% - 42px); background: #fff;
+  }
+  .other-row input[type="text"] { margin-left: 0; max-width: none; }
+  input[type="text"]:focus, textarea:focus {
+    outline: none; border-color: var(--barron-green);
+    box-shadow: 0 0 0 3px rgba(30,122,70,0.12);
+  }
+  textarea { resize: vertical; min-height: 72px; }
+  .limit-note { margin: 8px 0 0 42px; font-size: 0.82rem; color: var(--muted); }
+  .limit-note.over { color: var(--barron-red); font-weight: 600; }
+  .identity .options, .identity input { margin-left: 0; max-width: 100%; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 28px; }
+  button {
+    font: inherit; font-weight: 700; border: none; border-radius: 12px;
+    padding: 14px 26px; cursor: pointer; transition: transform 0.1s ease, box-shadow 0.15s ease;
+  }
+  button:active { transform: translateY(1px); }
+  button:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-primary { background: var(--barron-red); color: #fff; box-shadow: 0 6px 16px rgba(192,57,43,0.3); }
+  .btn-primary:hover:not(:disabled) { background: #a9311f; }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  .complete-banner {
+    background: var(--barron-green); color: #fff; border-radius: 14px;
+    padding: 22px; text-align: center; margin-top: 10px; font-weight: 600; font-size: 1.05rem;
+  }
+  .config-warning {
+    background: #fff4e5; border: 1px solid var(--barron-gold); color: #7a5600;
+    border-radius: 14px; padding: 16px 18px; margin: 20px 0; font-size: 0.92rem;
+  }
+  footer.fine { text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 26px; padding: 0 10px; }
+  #toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(120%); background: var(--ink); color: #fff;
+    padding: 13px 22px; border-radius: 12px; font-weight: 600;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    transition: transform 0.35s cubic-bezier(.2,.9,.3,1.2); z-index: 50; max-width: 90vw; text-align: center;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+  #toast.error { background: var(--barron-red); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>🎉 The Great Barron Personality Investigation</h1>
+    <p class="tagline">We work with you. But do we really KNOW you? 🕵️</p>
+    <p>Sure, we know who steals the good parking spots and who needs coffee before speaking to another human.
+       But what do we know about <strong>YOU</strong>?</p>
+    <div class="disclaimer">
+      <strong>DISCLAIMER:</strong> This is not a Christmas wish list, a shopping order, or a legally binding
+      promise from Santa. We're just gathering ideas, people! 😂 Your answers might inspire future celebrations,
+      activities, and random acts of Barron awesomeness.
+    </div>
+  </header>
+
+  <div id="configWarning" class="config-warning" style="display:none;">
+    ⚠️ <strong>Setup needed:</strong> This form isn't connected to the database yet.
+    Add your Supabase URL and anon key in <code>config.js</code> (see <code>README.md</code>).
+    Submissions are disabled until then.
+  </div>
+
+  <form id="surveyForm" novalidate>
+
+    <section class="card identity">
+      <div class="q-head">
+        <span class="q-num">★</span>
+        <h2 class="q-title">First, who's filing this report? <span style="font-weight:400;color:var(--muted);font-size:0.9rem;">(optional)</span></h2>
+      </div>
+      <p class="q-help" style="margin-left:42px;">Leave blank to stay a mystery. 🕶️</p>
+      <input type="text" name="name" placeholder="Your name (optional)" />
+    </section>
+
+    <section class="card">
+      <div class="q-head"><span class="q-num">1</span><h2 class="q-title">When you escape Barron for the day, where would we most likely find you?</h2></div>
+      <p class="q-help">Pick all that apply. We know you have layers.</p>
+      <div class="options two-col" data-group="q1">
+        <label class="opt"><input type="checkbox" name="q1" value="On the couch. I've earned this." /><span>On the couch. I've earned this.</span></label>
+        <label class="opt"><input type="checkbox" name="q1" value="Gaming like it's my second job." /><span>Gaming like it's my second job.</span></label>
+        <label class="opt"><input type="checkbox" name="q1" value="Watching sports and yelling at the TV." /><span>Watching sports and yelling at the TV.</span></label>
+        <label class="opt"><input type="checkbox" name="q1" value="Cooking, grilling, or eating something delicious." /><span>Cooking, grilling, or eating something delicious.</span></label>
+        <label class="opt"><input type="checkbox" name="q1" value="Camping, fishing, hiking, or enjoying the outdoors." /><span>Camping, fishing, hiking, or the outdoors.</span></label>
+        <label class="opt"><input type="checkbox" name="q1" value="Working on my car or another project." /><span>Working on my car or another project.</span></label>
+        <label class="opt"><input type="checkbox" name="q1" value="At the gym, voluntarily sweating." /><span>At the gym, voluntarily sweating.</span></label>
+        <label class="opt"><input type="checkbox" name="q1" value="Shopping. It's called retail therapy." /><span>Shopping. It's called retail therapy.</span></label>
+        <label class="opt"><input type="checkbox" name="q1" value="DIY projects that were supposed to take 20 minutes." /><span>DIY projects that were supposed to take 20 min.</span></label>
+        <label class="opt"><input type="checkbox" name="q1" value="Out with friends or family." /><span>Out with friends or family.</span></label>
+        <label class="opt"><input type="checkbox" name="q1" value="Traveling or planning my next escape." /><span>Traveling or planning my next escape.</span></label>
+      </div>
+      <div class="other-row"><span>Other:</span><input type="text" name="q1_other" placeholder="Tell us where else..." /></div>
+    </section>
+
+    <section class="card">
+      <div class="q-head"><span class="q-num">2</span><h2 class="q-title">Let's talk sports. Who's your team?</h2></div>
+      <p class="q-help">Football, basketball, baseball, hockey, college teams, or none of the above. We won't judge your questionable loyalties.</p>
+      <input type="text" name="q2" placeholder="Your team(s) — or 'none of the above'" />
+    </section>
+
+    <section class="card">
+      <div class="q-head"><span class="q-num">3</span><h2 class="q-title">Pick your TOP THREE categories of things that make you happy.</h2></div>
+      <p class="q-help">Choose up to <strong>3</strong>. We'll stop you at three — don't be greedy. 😉</p>
+      <div class="options two-col" data-group="q3" data-max="3">
+        <label class="opt"><input type="checkbox" name="q3" value="Electronics and cool gadgets" /><span>Electronics and cool gadgets</span></label>
+        <label class="opt"><input type="checkbox" name="q3" value="Tools and useful gadgets" /><span>Tools and useful gadgets</span></label>
+        <label class="opt"><input type="checkbox" name="q3" value="Food, snacks, and tasty treats" /><span>Food, snacks, and tasty treats</span></label>
+        <label class="opt"><input type="checkbox" name="q3" value="Coffee and drink accessories" /><span>Coffee and drink accessories</span></label>
+        <label class="opt"><input type="checkbox" name="q3" value="Outdoor and adventure gear" /><span>Outdoor and adventure gear</span></label>
+        <label class="opt"><input type="checkbox" name="q3" value="Gaming and entertainment" /><span>Gaming and entertainment</span></label>
+        <label class="opt"><input type="checkbox" name="q3" value="Sports merchandise" /><span>Sports merchandise</span></label>
+        <label class="opt"><input type="checkbox" name="q3" value="Home and kitchen gadgets" /><span>Home and kitchen gadgets</span></label>
+        <label class="opt"><input type="checkbox" name="q3" value="Car accessories" /><span>Car accessories</span></label>
+        <label class="opt"><input type="checkbox" name="q3" value="Comfort and cozy stuff" /><span>Comfort and cozy stuff</span></label>
+        <label class="opt"><input type="checkbox" name="q3" value="Gift cards and experiences" /><span>Gift cards and experiences</span></label>
+      </div>
+      <div class="other-row"><span>Something else entirely:</span><input type="text" name="q3_other" placeholder="Describe it..." /></div>
+    </section>
+
+    <section class="card">
+      <div class="q-head"><span class="q-num">4</span><h2 class="q-title">You have $75 to spend on yourself. What are you buying?</h2></div>
+      <p class="q-help">And no, paying your electric bill doesn't count. This is imaginary fun money!</p>
+      <textarea name="q4" placeholder="Treat yourself..."></textarea>
+    </section>
+
+    <section class="card">
+      <div class="q-head"><span class="q-num">5</span><h2 class="q-title">Which best describes your personality?</h2></div>
+      <p class="q-help">Pick the one that's most <em>you</em>.</p>
+      <div class="options" data-group="q5">
+        <label class="opt"><input type="radio" name="q5" value="The Practical One: If I can't use it, why do I own it?" /><span><strong>The Practical One:</strong> If I can't use it, why do I own it?</span></label>
+        <label class="opt"><input type="radio" name="q5" value="The Gadget Guru: Does it have buttons? I'm interested." /><span><strong>The Gadget Guru:</strong> Does it have buttons? I'm interested.</span></label>
+        <label class="opt"><input type="radio" name="q5" value="The Foodie: My love language is snacks." /><span><strong>The Foodie:</strong> My love language is snacks.</span></label>
+        <label class="opt"><input type="radio" name="q5" value="The Adventurer: Let's go somewhere!" /><span><strong>The Adventurer:</strong> Let's go somewhere!</span></label>
+        <label class="opt"><input type="radio" name="q5" value="The Homebody: Canceling plans IS the plan." /><span><strong>The Homebody:</strong> Canceling plans IS the plan.</span></label>
+        <label class="opt"><input type="radio" name="q5" value="The Competitive One: I don't lose. I just occasionally let others win." /><span><strong>The Competitive One:</strong> I don't lose. I just occasionally let others win.</span></label>
+        <label class="opt"><input type="radio" name="q5" value="The Wild Card: Even I don't know what I'm doing next." /><span><strong>The Wild Card:</strong> Even I don't know what I'm doing next.</span></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="q-head"><span class="q-num">6</span><h2 class="q-title">What's a $50–$75 purchase that was totally worth the money?</h2></div>
+      <p class="q-help">Something so good you'd tell a coworker, "Seriously, you need one of these."</p>
+      <textarea name="q6" placeholder="The purchase you'd recommend..."></textarea>
+    </section>
+
+    <section class="card">
+      <div class="q-head"><span class="q-num">7</span><h2 class="q-title">You're now Barron's Official White Elephant Gift Buyer! 🎅</h2></div>
+      <p class="q-help">Your mission: find a $50–$75 gift people would actually fight to steal. You're shopping for a crowd, not secretly submitting your personal list. Nice try, though.</p>
+      <textarea name="q7" placeholder="The gift people would fight over..."></textarea>
+    </section>
+
+    <section class="card">
+      <div class="q-head"><span class="q-num">8</span><h2 class="q-title">Finish this sentence:</h2></div>
+      <p class="q-help">"If you really knew me, you'd know I'm obsessed with ___."</p>
+      <div class="other-row"><span>I'm obsessed with</span><input type="text" name="q8" placeholder="...your answer" /></div>
+    </section>
+
+    <section class="card">
+      <div class="q-head"><span class="q-num">9</span><h2 class="q-title">What's something about you that would surprise your coworkers?</h2></div>
+      <p class="q-help">Keep it HR-appropriate, please. We have enough surprises around here. 😂</p>
+      <textarea name="q9" placeholder="Surprise us..."></textarea>
+    </section>
+
+    <div class="actions">
+      <button type="submit" class="btn-primary" id="submitBtn">✅ Submit My Report</button>
+      <button type="button" class="btn-ghost" id="clearBtn">Clear Form</button>
+    </div>
+
+    <div id="completeBanner" class="complete-banner" style="display:none;">
+      Investigation Complete! ✅<br />Thanks for helping us get to know the people behind the Barron name. 🎄
+    </div>
+  </form>
+
+  <footer class="fine">
+    This survey does not guarantee gifts, prizes, vacation days, raises, or a personal visit from Santa. Nice try, though. 🎄
+  </footer>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+(function () {
+  var form = document.getElementById("surveyForm");
+  var toast = document.getElementById("toast");
+  var submitBtn = document.getElementById("submitBtn");
+  var STORAGE_KEY = "barron_survey_draft";
+
+  // --- Supabase client ---
+  var cfg = window.BARRON_SUPABASE || {};
+  var configured = cfg.url && cfg.anonKey &&
+    cfg.url.indexOf("YOUR_SUPABASE") === -1 &&
+    cfg.anonKey.indexOf("YOUR_SUPABASE") === -1;
+  var sb = null;
+  if (configured && window.supabase) {
+    sb = window.supabase.createClient(cfg.url, cfg.anonKey);
+  } else {
+    document.getElementById("configWarning").style.display = "block";
+    submitBtn.disabled = true;
+  }
+
+  function showToast(msg, isError) {
+    toast.textContent = msg;
+    toast.className = isError ? "error show" : "show";
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { toast.className = toast.className.replace("show", "").trim(); }, 3200);
+  }
+
+  // Enforce "pick up to N"
+  document.querySelectorAll("[data-max]").forEach(function (group) {
+    var max = parseInt(group.getAttribute("data-max"), 10);
+    var note = document.createElement("div");
+    note.className = "limit-note";
+    group.parentNode.insertBefore(note, group.nextSibling);
+    function update() {
+      var boxes = group.querySelectorAll('input[type="checkbox"]');
+      var checked = group.querySelectorAll('input[type="checkbox"]:checked');
+      note.textContent = checked.length + " of " + max + " selected";
+      var full = checked.length >= max;
+      note.classList.toggle("over", full);
+      boxes.forEach(function (b) { if (!b.checked) b.disabled = full; });
+    }
+    group.addEventListener("change", update);
+    update();
+  });
+
+  function collect() {
+    var fd = new FormData(form);
+    return {
+      name: (fd.get("name") || "").trim() || null,
+      q1_locations: fd.getAll("q1"),
+      q1_other: (fd.get("q1_other") || "").trim() || null,
+      q2_team: (fd.get("q2") || "").trim() || null,
+      q3_categories: fd.getAll("q3"),
+      q3_other: (fd.get("q3_other") || "").trim() || null,
+      q4_spend75: (fd.get("q4") || "").trim() || null,
+      q5_personality: fd.get("q5") || null,
+      q6_worth_it: (fd.get("q6") || "").trim() || null,
+      q7_white_elephant: (fd.get("q7") || "").trim() || null,
+      q8_obsessed_with: (fd.get("q8") || "").trim() || null,
+      q9_surprise: (fd.get("q9") || "").trim() || null
+    };
+  }
+
+  // Draft autosave
+  form.addEventListener("input", function () {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(collect())); } catch (e) {}
+  });
+  (function restore() {
+    try {
+      var s = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      if (!s) return;
+      if (s.name) form.name.value = s.name;
+      (s.q1_locations || []).forEach(function (v) {
+        var el = form.querySelector('input[name="q1"][value="' + CSS.escape(v) + '"]'); if (el) el.checked = true;
+      });
+      if (s.q1_other) form.q1_other.value = s.q1_other;
+      if (s.q2_team) form.q2.value = s.q2_team;
+      (s.q3_categories || []).forEach(function (v) {
+        var el = form.querySelector('input[name="q3"][value="' + CSS.escape(v) + '"]'); if (el) el.checked = true;
+      });
+      if (s.q3_other) form.q3_other.value = s.q3_other;
+      if (s.q4_spend75) form.q4.value = s.q4_spend75;
+      if (s.q5_personality) {
+        var r = form.querySelector('input[name="q5"][value="' + CSS.escape(s.q5_personality) + '"]'); if (r) r.checked = true;
+      }
+      if (s.q6_worth_it) form.q6.value = s.q6_worth_it;
+      if (s.q7_white_elephant) form.q7.value = s.q7_white_elephant;
+      if (s.q8_obsessed_with) form.q8.value = s.q8_obsessed_with;
+      if (s.q9_surprise) form.q9.value = s.q9_surprise;
+      document.querySelectorAll("[data-max]").forEach(function (g) { g.dispatchEvent(new Event("change")); });
+    } catch (e) {}
+  })();
+
+  document.getElementById("clearBtn").addEventListener("click", function () {
+    if (!confirm("Clear all your answers?")) return;
+    form.reset();
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    document.querySelectorAll("[data-max]").forEach(function (g) {
+      g.querySelectorAll('input[type="checkbox"]').forEach(function (b) { b.disabled = false; });
+      g.dispatchEvent(new Event("change"));
+    });
+    document.getElementById("completeBanner").style.display = "none";
+    showToast("Form cleared");
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!sb) { showToast("Database not configured yet.", true); return; }
+
+    var payload = collect();
+
+    // Light check: make sure they answered *something*
+    var answered = payload.q1_locations.length || payload.q3_categories.length ||
+      payload.q2_team || payload.q4_spend75 || payload.q5_personality ||
+      payload.q6_worth_it || payload.q7_white_elephant || payload.q8_obsessed_with ||
+      payload.q9_surprise || payload.q1_other || payload.q3_other;
+    if (!answered) { showToast("Answer at least one question first 🙂", true); return; }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+
+    sb.from(cfg.table).insert([payload]).then(function (res) {
+      if (res.error) {
+        console.error(res.error);
+        showToast("Something went wrong: " + res.error.message, true);
+        submitBtn.disabled = false;
+        submitBtn.textContent = "✅ Submit My Report";
+        return;
+      }
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e2) {}
+      form.style.display = "none";
+      var banner = document.getElementById("completeBanner");
+      banner.style.display = "block";
+      banner.scrollIntoView({ behavior: "smooth", block: "center" });
+      showToast("Report submitted! 🎉");
+    });
+  });
+})();
+</script>
+</body>
+</html>
