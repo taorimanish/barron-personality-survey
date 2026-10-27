@@ -86,8 +86,9 @@ by the coffee machine, hallways, elevators, restroom doors — wherever people p
 2. Click **🖨️ Print Poster**.
 3. In the print dialog: set paper to **A4**, enable **Background graphics**, and either print or **Save as PDF**.
 
-> ⚠️ The PDF's QR points to `https://taorimanish.github.io/barron-personality-survey/`. If your
-> final survey URL is different, regenerate the PDF/QR (or ask Kiro) so the code matches.
+> ℹ️ The QR code and poster point to the short link **`https://bit.ly/barronsurvey`**, which
+> redirects to the live survey. Because it's a Bitly link, you can change the destination in
+> Bitly later (e.g. if you move hosting) **without reprinting any posters** — the QR keeps working.
 
 **The QR code points to the link in `config.js` → `surveyUrl`.** If you host the survey somewhere
 other than GitHub Pages, update that value (or use the "Update QR" box on the poster screen to

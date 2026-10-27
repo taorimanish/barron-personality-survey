@@ -16,6 +16,7 @@ window.BARRON_SUPABASE = {
   table: "barron_survey_responses",
 
   // Public link to the live survey (used by the QR code + poster).
-  // Update this if you host the survey somewhere other than GitHub Pages.
-  surveyUrl: "https://taorimanish.github.io/barron-personality-survey/"
+  // This is a Bitly short link that redirects to the live survey, so the
+  // destination can be changed in Bitly later WITHOUT reprinting posters.
+  surveyUrl: "https://bit.ly/barronsurvey"
 };
